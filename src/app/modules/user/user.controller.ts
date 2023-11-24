@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
 
+
+
+
+// creating a user 
+
 const createUser = async (req: Request, res: Response) => {
   try {
     const newUser = req.body;
@@ -13,14 +18,24 @@ const createUser = async (req: Request, res: Response) => {
     })
   }
   catch (err) {
-    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: "Coudn't create the user!",
+      error: {
+        code: 500,
+        description: "Coudn't create the user"
+      }
+    })
   }
 }
 
 
+// getting all the users
+
 const getUsers = async (req: Request, res: Response) => {
   try {
     const result = await userServices.getUsersFromDB();
+
     res.status(200).json({
       success: true,
       message: "Users fetched successfully!",
@@ -28,9 +43,19 @@ const getUsers = async (req: Request, res: Response) => {
     })
   }
   catch (err) {
-    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: "Coudn't get the users!",
+      error: {
+        code: 500,
+        description: "Coudn't get the users"
+      }
+    })
   }
 }
+
+
+// getting a single user
 
 const getSingleUser = async (req: Request, res: Response) => {
   const id = Number(req.params.userId);
@@ -43,7 +68,39 @@ const getSingleUser = async (req: Request, res: Response) => {
     })
   }
   catch (err) {
-    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: "Coudn't get the user!",
+      error: {
+        code: 500,
+        description: "Coudn't get the user"
+      }
+    })
+  }
+}
+
+// update a single user
+
+const updateSingleUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.userId);
+  const updatedObj = req.body;
+  try {
+    const result = await userServices.updateSingleUserInDB(id, updatedObj);
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully!",
+      data: result
+    })
+  }
+  catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Coudn't update the user!",
+      error: {
+        code: 500,
+        description: "Coudn't update the user"
+      }
+    })
   }
 }
 
@@ -51,6 +108,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 export const userController = {
   createUser,
   getUsers,
-  getSingleUser
+  getSingleUser,
+  updateSingleUser
 }
 

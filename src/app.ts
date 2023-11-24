@@ -16,7 +16,7 @@ app.use('/api/users', userRouter)
 
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!')
+  res.send('Assingment 2 API running')
 })
 
 

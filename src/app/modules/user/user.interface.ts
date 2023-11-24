@@ -27,5 +27,5 @@ export interface User {
   isActive: boolean;
   hobbies: Types.Array<string>;
   address: Address;
-  orders: Orders;
+  orders?: Orders[];
 }
