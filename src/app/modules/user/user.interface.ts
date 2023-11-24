@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface FullName {
   firstName: string;
   lastName: string;
@@ -23,7 +25,7 @@ export interface User {
   age: number;
   email: string;
   isActive: boolean;
-  hobbies: string[];
+  hobbies: Types.Array<string>;
   address: Address;
   orders: Orders;
 }
