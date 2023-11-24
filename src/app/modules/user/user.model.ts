@@ -4,8 +4,6 @@ import bcrypt from 'bcrypt';
 import config from "../../config";
 
 
-
-
 const fullNameSchema = new Schema<FullName>({
   firstName: String,
   lastName: String
@@ -45,6 +43,8 @@ const userSchema = new Schema<User>({
     }
   }
 })
+
+// middleware for hashing the password
 
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
