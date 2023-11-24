@@ -18,38 +18,33 @@ const addressSchema = new Schema<Address>({
   country: String
 }, { _id: false })
 
+
 const ordersSchema = new Schema<Orders>({
   productName: String,
   price: Number,
   quantity: Number
 }, { _id: false })
 
+
 const userSchema = new Schema<User>({
   userId: { type: Number, unique: true, required: true },
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true, minlength: 5, maxlength: 20 },
-  fullName: fullNameSchema,
+  fullName: { type: fullNameSchema, required: true },
   age: { type: Number, required: true },
   email: { type: String, unique: true, required: true, },
   isActive: { type: Boolean, default: true },
   hobbies: [String],
-  address: addressSchema,
+  address: { type: addressSchema, required: true },
   orders: [ordersSchema]
 }, {
   statics: {
-    async isUserExistsCheck(id: number): Promise<boolean> {
-      const result = await UserModel.exists({ userId: id });
-      return Boolean(result);
+    async isUserExistsCheck(id: number): Promise<User | null> {
+      const result = await UserModel.findOne({ userId: id });
+      return result;
     }
   }
 })
-
-
-// custom static method 
-
-// userSchema.static('isUserExists', async function isUserExists(id) {
-
-// })
 
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias

@@ -30,7 +30,10 @@ export interface User {
   orders?: Orders[];
 }
 
+
+// for adding a custom static method
+
 export interface IsUserExists extends Model<User> {
   // eslint-disable-next-line no-unused-vars
-  isUserExistsCheck(id: number): boolean;
+  isUserExistsCheck(id: number): User | null;
 }

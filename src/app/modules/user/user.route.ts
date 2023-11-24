@@ -10,6 +10,7 @@ router.post('/', userController.createUser);
 router.get('/', userController.getUsers);
 router.get('/:userId', userController.getSingleUser);
 router.put('/:userId', userController.updateSingleUser);
+router.delete('/:userId', userController.deleteSingleUser);
 
 
 export const userRouter = router;

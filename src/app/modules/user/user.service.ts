@@ -29,9 +29,9 @@ const getUsersFromDB = async () => {
 
 const getSingleUserFromDB = async (id: number) => {
   // const isExists = await UserModel.exists({ userId: id });
-  const isExists = UserModel.isUserExistsCheck(id);
+  const isExists = await UserModel.isUserExistsCheck(id);
 
-  if (isExists) {
+  if (isExists !== null) {
     const user = await UserModel.findOne({ userId: id }).select('userId username fullName age email isActive hobbies address -_id');
     return user;
   }
@@ -40,7 +40,7 @@ const getSingleUserFromDB = async (id: number) => {
 }
 
 const updateSingleUserInDB = async (id: number, updatedObj: object) => {
-  const isExists = UserModel.isUserExistsCheck(id);
+  const isExists = await UserModel.isUserExistsCheck(id);
   if (isExists !== null) {
     const user = await UserModel.findOneAndUpdate({ userId: id }, updatedObj,
       {
@@ -50,8 +50,17 @@ const updateSingleUserInDB = async (id: number, updatedObj: object) => {
 
     return user;
   }
-  return null;
+  return isExists;
+}
 
+const deleteSingleUserFromDB = async (id: number) => {
+  const isExists = await UserModel.isUserExistsCheck(id);
+
+  if (isExists !== null) {
+    const result = await UserModel.deleteOne({ userId: id });
+    return result;
+  }
+  return isExists;
 }
 
 
@@ -60,5 +69,6 @@ export const userServices = {
   createUserIntoDB,
   getUsersFromDB,
   getSingleUserFromDB,
-  updateSingleUserInDB
+  updateSingleUserInDB,
+  deleteSingleUserFromDB
 }
