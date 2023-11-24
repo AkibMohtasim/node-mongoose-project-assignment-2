@@ -27,7 +27,7 @@ const ordersSchema = new Schema<Orders>({
 const userSchema = new Schema<User>({
   userId: { type: Number, unique: true, required: true },
   username: { type: String, unique: true, required: true },
-  password: { type: String, required: true, minlength: 5, maxlength: 20 },
+  password: { type: String, required: true, minlength: 5 },
   fullName: { type: fullNameSchema, required: true },
   age: { type: Number, required: true },
   email: { type: String, unique: true, required: true, },

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
+import userValidationSchema from "./user.validation";
 
 
 
@@ -9,13 +10,24 @@ import { userServices } from "./user.service";
 const createUser = async (req: Request, res: Response) => {
   try {
     const newUser = req.body;
-    const result = await userServices.createUserIntoDB(newUser);
 
-    res.status(200).json({
-      success: true,
-      message: "User created successfully!",
-      data: result
-    })
+    const { error, value } = userValidationSchema.validate(newUser);
+
+    if (error) {
+      res.status(500).json({
+        success: false,
+        error: "Coudn't create the user!",
+        message: error?.details[0]?.message
+      })
+    }
+    else {
+      const result = await userServices.createUserIntoDB(value);
+      res.status(200).json({
+        success: true,
+        message: "User created successfully!",
+        data: result
+      })
+    }
   }
   catch (err) {
     res.status(500).json({
@@ -96,25 +108,38 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateSingleUser = async (req: Request, res: Response) => {
   const id = Number(req.params.userId);
   const updatedObj = req.body;
+  const { error, value } = userValidationSchema.validate(updatedObj);
+
   try {
-    const result = await userServices.updateSingleUserInDB(id, updatedObj);
-    if (result) {
-      res.status(200).json({
-        success: true,
-        message: "User updated successfully!",
-        data: result
+    if (error) {
+      res.status(500).json({
+        success: false,
+        error: "Coudn't update the user!",
+        message: error?.details[0]?.message
       })
     }
     else {
-      res.status(404).json({
-        "success": false,
-        "message": "User not found",
-        "error": {
-          "code": 404,
-          "description": "User not found!"
-        }
-      })
+      const result = await userServices.updateSingleUserInDB(id, value);
+      if (result) {
+        res.status(200).json({
+          success: true,
+          message: "User updated successfully!",
+          data: result
+        })
+      }
+      else {
+        res.status(404).json({
+          "success": false,
+          "message": "User not found",
+          "error": {
+            "code": 404,
+            "description": "User not found!"
+          }
+        })
+      }
     }
+
+
 
   }
   catch (err) {
