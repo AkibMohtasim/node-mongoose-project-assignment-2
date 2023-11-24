@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Address, FullName, Orders, User } from "./user.interface";
+import { Address, FullName, IsUserExists, Orders, User } from "./user.interface";
 import bcrypt from 'bcrypt';
 import config from "../../config";
 
@@ -24,7 +24,6 @@ const ordersSchema = new Schema<Orders>({
   quantity: Number
 }, { _id: false })
 
-
 const userSchema = new Schema<User>({
   userId: { type: Number, unique: true, required: true },
   username: { type: String, unique: true, required: true },
@@ -36,8 +35,21 @@ const userSchema = new Schema<User>({
   hobbies: [String],
   address: addressSchema,
   orders: [ordersSchema]
+}, {
+  statics: {
+    async isUserExistsCheck(id: number): Promise<boolean> {
+      const result = await UserModel.exists({ userId: id });
+      return Boolean(result);
+    }
+  }
 })
 
+
+// custom static method 
+
+// userSchema.static('isUserExists', async function isUserExists(id) {
+
+// })
 
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -46,10 +58,5 @@ userSchema.pre('save', async function (next) {
   next();
 })
 
-// userSchema.post('save', async function (doc, next) {
-//   next();
-// })
 
-
-
-export const UserModel = model<User>('User', userSchema);
+export const UserModel = model<User, IsUserExists>('User', userSchema);

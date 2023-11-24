@@ -28,18 +28,30 @@ const getUsersFromDB = async () => {
 
 
 const getSingleUserFromDB = async (id: number) => {
-  const user = await UserModel.findOne({ userId: id }).select('userId username fullName age email isActive hobbies address -_id');
-  return user;
+  // const isExists = await UserModel.exists({ userId: id });
+  const isExists = UserModel.isUserExistsCheck(id);
+
+  if (isExists) {
+    const user = await UserModel.findOne({ userId: id }).select('userId username fullName age email isActive hobbies address -_id');
+    return user;
+  }
+  return isExists;
+
 }
 
 const updateSingleUserInDB = async (id: number, updatedObj: object) => {
-  const user = await UserModel.findOneAndUpdate({ userId: id }, updatedObj,
-    {
-      new: true,
-      select: 'userId username fullName age email isActive hobbies address -_id'
-    });
-  // console.log({ updatedUser: user })
-  return user;
+  const isExists = UserModel.isUserExistsCheck(id);
+  if (isExists !== null) {
+    const user = await UserModel.findOneAndUpdate({ userId: id }, updatedObj,
+      {
+        new: true,
+        select: 'userId username fullName age email isActive hobbies address -_id'
+      });
+
+    return user;
+  }
+  return null;
+
 }
 
 

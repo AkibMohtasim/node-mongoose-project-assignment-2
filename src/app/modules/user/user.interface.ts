@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Model, Types } from "mongoose";
 
 export interface FullName {
   firstName: string;
@@ -28,4 +28,9 @@ export interface User {
   hobbies: Types.Array<string>;
   address: Address;
   orders?: Orders[];
+}
+
+export interface IsUserExists extends Model<User> {
+  // eslint-disable-next-line no-unused-vars
+  isUserExistsCheck(id: number): boolean;
 }
