@@ -277,6 +277,43 @@ const getAllOrdersFromUser = async (req: Request, res: Response) => {
   }
 }
 
+const getAllOrdersPriceFromUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.userId);
+
+  try {
+    const result = await userServices.getAllOrdersPriceFromUserDB(id);
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: "Total price calculated successfully!",
+        data: {
+          totalPrice: result?.totalPrice
+        }
+      })
+    }
+    else {
+      res.status(404).json({
+        "success": false,
+        "message": "User not found",
+        "error": {
+          "code": 404,
+          "description": "User not found!"
+        }
+      })
+    }
+  }
+  catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Coudn't get the orders!",
+      error: {
+        code: 500,
+        description: "Coudn't get the orders"
+      }
+    })
+  }
+}
+
 
 export const userController = {
   createUser,
@@ -285,6 +322,7 @@ export const userController = {
   updateSingleUser,
   deleteSingleUser,
   addProductInOrder,
-  getAllOrdersFromUser
+  getAllOrdersFromUser,
+  getAllOrdersPriceFromUser
 }
 
