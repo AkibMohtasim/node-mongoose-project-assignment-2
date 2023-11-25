@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
-import userValidationSchema from "./user.validation";
+import userValidationSchema, { ordersValidaitonSchema } from "./user.validation";
 
 
 
@@ -138,9 +138,6 @@ const updateSingleUser = async (req: Request, res: Response) => {
         })
       }
     }
-
-
-
   }
   catch (err) {
     res.status(500).json({
@@ -194,11 +191,100 @@ const deleteSingleUser = async (req: Request, res: Response) => {
 }
 
 
+
+// add a new product in the order
+
+const addProductInOrder = async (req: Request, res: Response) => {
+  const id = Number(req.params.userId);
+
+  const updatedOrderObj = req.body;
+
+  const { error, value } = ordersValidaitonSchema.validate(updatedOrderObj);
+
+  try {
+    if (error) {
+      res.status(500).json({
+        success: false,
+        error: "Coudn't add the order!",
+        message: error?.details[0]?.message
+      })
+    }
+    else {
+      const result = await userServices.addProductOrderInDB(id, value);
+
+      if (result) {
+        res.status(200).json({
+          success: true,
+          message: "Order created successfully!",
+          data: null
+        })
+      }
+      else {
+        res.status(404).json({
+          "success": false,
+          "message": "User not found",
+          "error": {
+            "code": 404,
+            "description": "User not found!"
+          }
+        })
+      }
+    }
+  }
+  catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Coudn't create the order!",
+      error: {
+        code: 500,
+        description: "Coudn't create the order."
+      }
+    })
+  }
+}
+
+const getAllOrdersFromUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.userId);
+  try {
+    const result = await userServices.getAllOrdersFromUserDB(id);
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: "Order fetched successfully!",
+        data: result
+      })
+    }
+    else {
+      res.status(404).json({
+        "success": false,
+        "message": "User not found",
+        "error": {
+          "code": 404,
+          "description": "User not found!"
+        }
+      })
+    }
+  }
+  catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Coudn't get the orders!",
+      error: {
+        code: 500,
+        description: "Coudn't get the orders"
+      }
+    })
+  }
+}
+
+
 export const userController = {
   createUser,
   getUsers,
   getSingleUser,
   updateSingleUser,
-  deleteSingleUser
+  deleteSingleUser,
+  addProductInOrder,
+  getAllOrdersFromUser
 }
 

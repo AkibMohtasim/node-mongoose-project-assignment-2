@@ -19,10 +19,10 @@ const addressValidaitonSchema = Joi.object({
 })
 
 
-const ordersValidaitonSchema = Joi.object({
-  productName: Joi.string(),
-  price: Joi.number().sign("positive"),
-  quantity: Joi.number().sign("positive"),
+export const ordersValidaitonSchema = Joi.object({
+  productName: Joi.string().required(),
+  price: Joi.number().sign("positive").required(),
+  quantity: Joi.number().sign("positive").required(),
 });
 
 const userValidationSchema = Joi.object({
@@ -35,7 +35,7 @@ const userValidationSchema = Joi.object({
   isActive: Joi.boolean().default(true),
   hobbies: Joi.array().items(Joi.string()),
   address: addressValidaitonSchema,
-  orders: Joi.array().items(ordersValidaitonSchema).optional()
+  orders: Joi.array().items(ordersValidaitonSchema)
 })
 
 

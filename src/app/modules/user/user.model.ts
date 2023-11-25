@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Address, FullName, IsUserExists, Orders, User } from "./user.interface";
+import { Address, FullName, IsUserExists, Order, User } from "./user.interface";
 import bcrypt from 'bcrypt';
 import config from "../../config";
 
@@ -17,10 +17,10 @@ const addressSchema = new Schema<Address>({
 }, { _id: false })
 
 
-const ordersSchema = new Schema<Orders>({
-  productName: String,
-  price: Number,
-  quantity: Number
+const ordersSchema = new Schema<Order>({
+  productName: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true }
 }, { _id: false })
 
 
@@ -44,7 +44,7 @@ const userSchema = new Schema<User>({
   }
 })
 
-// middleware for hashing the password
+// --- middleware for hashing the password ---
 
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias

@@ -11,7 +11,7 @@ export interface Address {
   country: string;
 }
 
-export interface Orders {
+export interface Order {
   productName: string;
   price: number;
   quantity: number;
@@ -27,7 +27,7 @@ export interface User {
   isActive: boolean;
   hobbies: Types.Array<string>;
   address: Address;
-  orders?: Orders[];
+  orders?: Order[];
 }
 
 
