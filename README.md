@@ -14,11 +14,11 @@
 
   At first, go to the project directory
 
-  cd assignment-2-node-mongoose
+    cd assignment-2-node-mongoose
 
   Now install the dependencies by using this command 
 
-  npm install
+    npm install
 
 ### Run the application
 
@@ -26,16 +26,16 @@
 
   for development -
 
-  npm run start:dev
+    npm run start:dev
 
   for production -
 
-  npm run start:prod
+    npm run start:prod
 
 
 ### Build the application
 
   The language used for this code is TypeScript. If you want to build the application (transpile to JavaScript), you have to run this command -
 
-  npm run build
+    npm run build
  
