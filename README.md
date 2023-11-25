@@ -4,13 +4,13 @@
 
 ## Here are the steps you need to follow -
 
-### Clone this repository
+### 1. Clone this repository
 
   in the command terminal, run
 
-  git clone https://github.com/AkibMohtasim/node-mongoose-project-assignment-2.git
+    git clone https://github.com/AkibMohtasim/node-mongoose-project-assignment-2.git
 
-### Install the dependencies
+### 2. Install the dependencies
 
   At first, go to the project directory
 
@@ -20,9 +20,9 @@
 
     npm install
 
-### Run the application
+### 3. Run the application
 
-  there are two commands for this, first one is for development, which will be restarted on every changes made on the file. And the second one is for production. To run for production, you have to build the application first, which is instructed in the next step.
+  there are two commands for this, first one is for development, which will be restarted on every changes made on the file. And the second one is for production. **To run for production, you have to build the application first, which is instructed in the next step**.
 
   for development -
 
@@ -33,7 +33,7 @@
     npm run start:prod
 
 
-### Build the application
+### 4. Build the application
 
   The language used for this code is TypeScript. If you want to build the application (transpile to JavaScript), you have to run this command -
 
