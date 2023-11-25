@@ -243,6 +243,8 @@ const addProductInOrder = async (req: Request, res: Response) => {
   }
 }
 
+// getting all orders from a single user
+
 const getAllOrdersFromUser = async (req: Request, res: Response) => {
   const id = Number(req.params.userId);
   try {
@@ -276,6 +278,9 @@ const getAllOrdersFromUser = async (req: Request, res: Response) => {
     })
   }
 }
+
+
+// getting the total order price from a user
 
 const getAllOrdersPriceFromUser = async (req: Request, res: Response) => {
   const id = Number(req.params.userId);
